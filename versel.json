@@ -1,45 +1,86 @@
-// api/index.js
-const express = require('express');
-const app = express();
-const path = require('path');
-
-app.use(express.static(path.join(__dirname, '../public')));
-
-// Handle routing for HTML files
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-app.get('/dashboard', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/dashboard.html'));
-});
-
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/admin.html'));
-});
-
-app.get('/emergency', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/emergency.html'));
-});
-
-app.get('/help', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/help.html'));
-});
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/login.html'));
-});
-
-app.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/register.html'));
-});
-
-// Handle API routes
-app.use('/api', require('./backend'));
-
-// Handle 404
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, '../public/index.html'));
-});
-
-module.exports = app;
+{
+  "builds": [
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "backend.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "/emergency",
+      "dest": "/emergency.html"
+    },
+    {
+      "src": "/help",
+      "dest": "/help.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/register.html"
+    },
+    {
+      "src": "/backend",
+      "dest": "/backend.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 404
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "geolocation=(), microphone=(), camera=()"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
