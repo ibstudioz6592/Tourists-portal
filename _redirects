@@ -1,0 +1,9 @@
+/                /index.html      200
+/login           /login.html     200
+/register        /register.html  200
+/dashboard       /dashboard.html  200
+/admin           /admin.html     200
+/emergency       /emergency.html 200
+/help            /help.html      200
+/backend         /backend.js     200
+/*               /index.html      404
