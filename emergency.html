@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Services - Smart Tourist Safety System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Emergency Section */
+        .emergency-section {
+            margin-top: 100px;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .emergency-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .emergency-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .emergency-subtitle {
+            font-size: 1.25rem;
+            color: #CBD5E1;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Emergency Button */
+        .emergency-btn-container {
+            margin-bottom: 4rem;
+        }
+
+        .emergency-btn {
+            position: relative;
+            padding: 2rem 4rem;
+            background: linear-gradient(135deg, var(--danger), #DC2626);
+            border: none;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+            }
+            50% { 
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(239, 68, 68, 0.6);
+            }
+        }
+
+        .emergency-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .emergency-btn:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .emergency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.5);
+        }
+
+        .emergency-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Emergency Services */
+        .emergency-services {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(239, 68, 68, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--danger);
+            margin: 0 auto 1.5rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            color: #CBD5E1;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-btn:hover {
+            background: #DC2626;
+            transform: translateY(-2px);
+        }
+
+        /* Safe Zones Map */
+        .safe-zones {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        #safeZonesMap {
+            height: 100%;
+            width: 100%;
+        }
+
+        .safe-zones-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .safe-zone-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .safe-zone-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .safe-zone-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .safe-zone-type {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .safe-zone-distance {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .navigate-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .navigate-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Emergency Tips */
+        .emergency-tips {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .tip-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .tip-icon {
+            font-size: 1.5rem;
+            color: var(--warning);
+            margin-top: 0.25rem;
+        }
+
+        .tip-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tip-content p {
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* Emergency Chat */
+        .emergency-chat {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .chat-header {
+            padding: 1rem 1.5rem;
+            background: var(--danger);
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-message {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .chat-message.received {
+            flex-direction: row;
+        }
+
+        .chat-message.sent {
+            flex-direction: row-reverse;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 15px;
+            font-size: 0.875rem;
+        }
+
+        .chat-message.received .chat-bubble {
+            background: var(--glass);
+            color: #CBD5E1;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-message.sent .chat-bubble {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 0.5rem 1rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            color: white;
+        }
+
+        .chat-input button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .emergency-title {
+                font-size: 2rem;
+            }
+            
+            .emergency-services {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-btn {
+                padding: 1.5rem 3rem;
+                font-size: 1.25rem;
+            }
+            
+            .emergency-chat {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">Tourist Safety System</div>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="btn" style="background: var(--glass); color: #CBD5E1; border: 1px solid var(--glass-border);">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Emergency Section -->
+    <section class="emergency-section">
+        <h1 class="emergency-title">Emergency Services</h1>
+        <p class="emergency-subtitle">
+            In case of emergency, press the button below or contact the relevant emergency services directly
+        </p>
+        
+        <div class="emergency-btn-container">
+            <button class="emergency-btn" id="emergencyAlertBtn">
+                <i class="fas fa-exclamation-triangle"></i>
+                EMERGENCY ALERT
+            </button>
+        </div>
+    </section>
+
+    <!-- Emergency Services -->
+    <section class="emergency-services">
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-phone-alt"></i>
+            </div>
+            <h3 class="service-title">Police</h3>
+            <div class="service-number">100</div>
+            <p class="service-description">24/7 Emergency Police Services for immediate assistance</p>
+            <button class="service-btn" onclick="makeEmergencyCall('100')">
+                <i class="fas fa-phone"></i>
+                Call Now
+            </button>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-ambulance"></i>
+            </div>
+            <h3 class="service-title">Ambulance</h3>
+            <div class="service-number">108</div>
+            <p class="service-description">Medical emergency services for immediate health assistance</p>
+            <button class="service-btn" onclick="makeEmergencyCall('108')">
+                <i class="fas fa-phone"></i>
+                Call Now
+            </button>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-fire-extinguisher"></i>
+            </div>
+            <h3 class="service-title">Fire Department</h3>
+            <div class="service-number">101</div>
+            <p class="service-description">Fire rescue and emergency services for fire incidents</p>
+            <button class="service-btn" onclick="makeEmergencyCall('101')">
+                <i class="fas fa-phone"></i>
+                Call Now
+            </button>
+        </div>
+        
+        <div class="service-card">
+            <div class="service-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h3 class="service-title">Tourist Helpline</h3>
+            <div class="service-number">1363</div>
+            <p class="service-description">24/7 tourist assistance and information services</p>
+            <button class="service-btn" onclick="makeEmergencyCall('1363')">
+                <i class="fas fa-phone"></i>
+                Call Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Safe Zones Map -->
+    <section class="safe-zones">
+        <h2 class="section-title">Nearby Safe Zones</h2>
+        <div class="map-container">
+            <div id="safeZonesMap"></div>
+        </div>
+        <div class="safe-zones-list">
+            <div class="safe-zone-item">
+                <h3 class="safe-zone-name">Central Police Station</h3>
+                <p class="safe-zone-type">Police</p>
+                <p class="safe-zone-distance">0.5 km away</p>
+                <button class="navigate-btn" onclick="navigateToLocation('Central Police Station')">
+                    <i class="fas fa-directions"></i>
+                    Navigate
+                </button>
+            </div>
+            <div class="safe-zone-item">
+                <h3 class="safe-zone-name">City Hospital</h3>
+                <p class="safe-zone-type">Medical</p>
+                <p class="safe-zone-distance">1.2 km away</p>
+                <button class="navigate-btn" onclick="navigateToLocation('City Hospital')">
+                    <i class="fas fa-directions"></i>
+                    Navigate
+                </button>
+            </div>
+            <div class="safe-zone-item">
+                <h3 class="safe-zone-name">Tourist Information Center</h3>
+                <p class="safe-zone-type">Information</p>
+                <p class="safe-zone-distance">0.8 km away</p>
+                <button class="navigate-btn" onclick="navigateToLocation('Tourist Information Center')">
+                    <i class="fas fa-directions"></i>
+                    Navigate
+                </button>
+            </div>
+            <div class="safe-zone-item">
+                <h3 class="safe-zone-name">Emergency Shelter</h3>
+                <p class="safe-zone-type">Shelter</p>
+                <p class="safe-zone-distance">1.5 km away</p>
+                <button class="navigate-btn" onclick="navigateToLocation('Emergency Shelter')">
+                    <i class="fas fa-directions"></i>
+                    Navigate
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Tips -->
+    <section class="emergency-tips">
+        <h2 class="section-title">Emergency Tips</h2>
+        <div class="tips-grid">
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Know Your Location</h4>
+                    <p>Always be aware of your surroundings and know your exact location to share with emergency services.</p>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Save Emergency Numbers</h4>
+                    <p>Save important emergency numbers in your phone and keep a written copy as backup.</p>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Stay in Groups</h4>
+                    <p>Whenever possible, travel in groups and stay in well-lit, populated areas.</p>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-first-aid"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Basic First Aid</h4>
+                    <p>Learn basic first aid skills to help yourself and others in emergency situations.</p>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Learn Local Language</h4>
+                    <p>Learn basic phrases in the local language to ask for help when needed.</p>
+                </div>
+            </div>
+            <div class="tip-item">
+                <div class="tip-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div class="tip-content">
+                    <h4>Carry ID</h4>
+                    <p>Always carry identification and emergency contact information with you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Chat -->
+    <div class="emergency-chat">
+        <div class="chat-header">
+            <span>Emergency Support Chat</span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" style="background: none; border: none; color: white; font-size: 1.25rem; cursor: pointer;">×</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-message received">
+                <div class="chat-bubble">
+                    Hello! This is the emergency support chat. How can I help you today?
+                </div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize Map
+        const map = L.map('safeZonesMap').setView([28.6139, 77.2090], 13);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add safe zone markers
+        const safeZones = [
+            { name: "Central Police Station", lat: 28.6139, lng: 77.2090, type: "Police" },
+            { name: "City Hospital", lat: 28.7041, lng: 77.1025, type: "Medical" },
+            { name: "Tourist Information Center", lat: 28.5355, lng: 77.3910, type: "Information" },
+            { name: "Emergency Shelter", lat: 28.4595, lng: 77.0266, type: "Shelter" }
+        ];
+
+        safeZones.forEach(zone => {
+            const marker = L.marker([zone.lat, zone.lng]).addTo(map);
+            marker.bindPopup(`<b>${zone.name}</b><br>${zone.type}`);
+        });
+
+        // Emergency Alert Button
+        document.getElementById('emergencyAlertBtn').addEventListener('click', function() {
+            // Simulate emergency alert
+            alert('Emergency alert sent! Help is on the way.');
+            
+            // In a real implementation, this would:
+            // 1. Get current location
+            // 2. Send alert to backend
+            // 3. Notify emergency services
+            // 4. Alert nearby users
+        });
+
+        // Make Emergency Call
+        function makeEmergencyCall(number) {
+            window.open(`tel:${number}`, '_self');
+        }
+
+        // Navigate to Location
+        function navigateToLocation(location) {
+            // In a real implementation, this would use GPS coordinates
+            alert(`Navigating to ${location}...`);
+        }
+
+        // Send Chat Message
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            const messagesContainer = document.getElementById('chatMessages');
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message sent';
+            userMessage.innerHTML = `<div class="chat-bubble">${message}</div>`;
+            messagesContainer.appendChild(userMessage);
+            
+            // Clear input
+            input.value = '';
+            
+            // Simulate response
+            setTimeout(() => {
+                const responses = [
+                    "I understand your emergency. Help is on the way.",
+                    "Your location has been shared with emergency services.",
+                    "Please stay calm and remain where you are.",
+                    "Emergency services have been notified of your situation."
+                ];
+                
+                const responseMessage = document.createElement('div');
+                responseMessage.className = 'chat-message received';
+                responseMessage.innerHTML = `<div class="chat-bubble">${responses[Math.floor(Math.random() * responses.length)]}</div>`;
+                messagesContainer.appendChild(responseMessage);
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1500);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
