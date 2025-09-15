@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center - Smart Tourist Safety System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Help Header */
+        .help-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .help-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .help-subtitle {
+            font-size: 1.125rem;
+            color: #CBD5E1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94A3B8;
+        }
+
+        /* Help Categories */
+        .help-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-description {
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        .faq-question h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .faq-toggle {
+            font-size: 1.25rem;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 1.5rem 1.5rem;
+            color: #CBD5E1;
+            line-height: 1.6;
+        }
+
+        /* Contact Support */
+        .contact-support {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .support-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .support-description {
+            color: #CBD5E1;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(79, 70, 229, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .contact-label {
+            font-weight: 500;
+        }
+
+        .contact-value {
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+        }
+
+        .language-selector select {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .language-selector option {
+            background: var(--dark);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .help-title {
+                font-size: 2rem;
+            }
+            
+            .help-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-methods {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">Tourist Safety System</div>
+            </div>
+            <div class="header-actions">
+                <a href="index.html" class="btn" style="background: var(--glass); color: #CBD5E1; border: 1px solid var(--glass-border); padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none;">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Help Header -->
+        <div class="help-header">
+            <h1 class="help-title">Help Center</h1>
+            <p class="help-subtitle">
+                Find answers to common questions and learn how to make the most of the Smart Tourist Safety System
+            </p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search for help articles...">
+        </div>
+
+        <!-- Help Categories -->
+        <div class="help-categories">
+            <div class="category-card" onclick="scrollToSection('getting-started')">
+                <div class="category-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="category-title">Getting Started</h3>
+                <p class="category-description">Learn how to register and set up your account</p>
+            </div>
+            
+            <div class="category-card" onclick="scrollToSection('safety-features')">
+                <div class="category-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="category-title">Safety Features</h3>
+                <p class="category-description">Explore all safety features and how to use them</p>
+            </div>
+            
+            <div class="category-card" onclick="scrollToSection('emergency-help')">
+                <div class="category-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="category-title">Emergency Help</h3>
+                <p class="category-description">What to do in case of an emergency</p>
+            </div>
+            
+            <div class="category-card" onclick="scrollToSection('troubleshooting')">
+                <div class="category-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3 class="category-title">Troubleshooting</h3>
+                <p class="category-description">Solve common issues and technical problems</p>
+            </div>
+            
+            <div class="category-card" onclick="scrollToSection('contact-support')">
+                <div class="category-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3 class="category-title">Contact Support</h3>
+                <p class="category-description">Get in touch with our support team</p>
+            </div>
+            
+            <div class="category-card" onclick="scrollToSection('faq')">
+                <div class="category-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3 class="category-title">FAQs</h3>
+                <p class="category-description">Frequently asked questions and answers</p>
+            </div>
+        </div>
+
+        <!-- Getting Started Section -->
+        <section id="getting-started" class="help-section">
+            <h2 class="section-title">Getting Started</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How do I register for the Tourist Safety System?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        To register for the Tourist Safety System:
+                        <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Visit the registration page on our website or mobile app</li>
+                            <li>Fill in your personal details including name, email, and phone number</li>
+                            <li>Provide your travel itinerary and accommodation details</li>
+                            <li>Add emergency contact information</li>
+                            <li>Verify your email address and phone number</li>
+                            <li>Complete the registration process</li>
+                        </ol>
+                        <p style="margin-top: 1rem;">Once registered, you'll receive a digital ID that you can use to access all safety features.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What information do I need to provide during registration?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        During registration, you'll need to provide:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Personal information (name, email, phone number)</li>
+                            <li>Nationality and passport details (for international tourists)</li>
+                            <li>Travel dates and destinations</li>
+                            <li>Accommodation details</li>
+                            <li>Emergency contact information</li>
+                            <li>Health information (optional)</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">All information is kept secure and is only used for your safety and emergency response.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Safety Features Section -->
+        <section id="safety-features" class="help-section">
+            <h2 class="section-title">Safety Features</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How does real-time location tracking work?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The real-time location tracking feature uses GPS technology to monitor your location:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Enable location services on your device</li>
+                            <li>Allow the app to access your location when prompted</li>
+                            <li>Your location is updated in real-time (only during your travels)</li>
+                            <li>Location data is encrypted and secure</li>
+                            <li>You can pause tracking at any time from settings</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">This feature helps emergency services locate you quickly in case of an emergency.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What is the emergency alert system?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        The emergency alert system allows you to quickly notify emergency services:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Press the emergency button in the app or on your smart band</li>
+                            <li>Your location and emergency details are sent immediately</li>
+                            <li>Nearby emergency services are notified</li>
+                            <li>Your emergency contacts are alerted</li>
+                            <li>You can communicate with emergency responders through the app</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">This feature should only be used in genuine emergencies.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Emergency Help Section -->
+        <section id="emergency-help" class="help-section">
+            <h2 class="section-title">Emergency Help</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What should I do in case of a medical emergency?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        In case of a medical emergency:
+                        <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Press the emergency button in the app or dial 108 for ambulance</li>
+                            <li>Provide your location and nature of emergency</li>
+                            <li>Follow the instructions provided by emergency services</li>
+                            <li>If possible, have your digital ID ready to show responders</li>
+                            <li>Stay on the line until help arrives</li>
+                        </ol>
+                        <p style="margin-top: 1rem;">The app will automatically share your location with emergency services.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How do I find the nearest safe zone?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        To find the nearest safe zone:
+                        <ol style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Open the app and go to the "Safe Zones" section</li>
+                            <li>Allow the app to access your location</li>
+                            <li>View the map showing nearby safe zones</li>
+                            <li>Click on any safe zone for more details and directions</li>
+                            <li>Use the navigation feature to get turn-by-turn directions</li>
+                        </ol>
+                        <p style="margin-top: 1rem;">Safe zones include police stations, hospitals, tourist information centers, and emergency shelters.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Troubleshooting Section -->
+        <section id="troubleshooting" class="help-section">
+            <h2 class="section-title">Troubleshooting</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Why is my location not updating?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        If your location is not updating:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Check if location services are enabled on your device</li>
+                            <li>Ensure the app has permission to access your location</li>
+                            <li>Make sure you have a stable internet connection</li>
+                            <li>Check if GPS is enabled on your device</li>
+                            <li>Try restarting the app</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">If the problem persists, contact our support team for assistance.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What should I do if I can't receive alerts?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        If you're not receiving alerts:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Check your notification settings in the app</li>
+                            <li>Ensure push notifications are enabled for the app</li>
+                            <li>Check if your device is in Do Not Disturb mode</li>
+                            <li>Verify your internet connection</li>
+                            <li>Make sure your app is updated to the latest version</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">You can also check your alert preferences in the app settings.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="help-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Is my personal information secure?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, your personal information is secure. We use:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>End-to-end encryption for all data transmission</li>
+                            <li>Secure servers with regular security audits</li>
+                            <li>Blockchain technology for sensitive data verification</li>
+                            <li>Strict access controls and authentication</li>
+                            <li>Compliance with data protection regulations</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">Your data is only shared with emergency services when absolutely necessary.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Can I use the app internationally?</h3>
+                    <i class="fas fa-chevron-down faq-toggle"></i>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        Yes, the app works internationally with some limitations:
+                        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                            <li>Emergency services are specific to India</li>
+                            <li>You may incur data roaming charges</li>
+                            <li>Some features may be limited outside India</li>
+                            <li>Make sure to have an international data plan</li>
+                        </ul>
+                        <p style="margin-top: 1rem;">For international travel, we recommend purchasing a local SIM card for better connectivity.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Support Section -->
+        <section id="contact-support" class="help-section">
+            <h2 class="section-title">Contact Support</h2>
+            
+            <div class="contact-support">
+                <h3 class="support-title">Need More Help?</h3>
+                <p class="support-description">
+                    Our support team is available 24/7 to assist you with any questions or issues you may have.
+                </p>
+                
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-label">Phone Support</div>
+                        <div class="contact-value">1800-123-4567</div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-label">Email Support</div>
+                        <div class="contact-value">support@tourist-safety.gov.in</div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="contact-label">Live Chat</div>
+                        <div class="contact-value">Available in app</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <i class="fas fa-globe"></i>
+        <select onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="bn">বাংলা</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+        </select>
+    </div>
+
+    <script>
+        // Toggle FAQ items
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            faqItem.classList.toggle('active');
+        }
+
+        // Scroll to section
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Change language
+        function changeLanguage(language) {
+            // In a real implementation, this would change the page language
+            console.log('Language changed to:', language);
+            alert(`Language changed to ${language}. This is a demo feature.`);
+        }
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('h3').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
