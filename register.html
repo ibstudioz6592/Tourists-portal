@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Smart Tourist Safety System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .register-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .register-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .register-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .register-subtitle {
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.75rem;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: #94A3B8;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #CBD5E1;
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .form-control select {
+            cursor: pointer;
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #94A3B8;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-dark);
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #94A3B8;
+            text-decoration: none;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        .emergency-section {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-section h4 {
+            color: var(--danger);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-header">
+                <div class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 class="register-title">Create Account</h1>
+                <p class="register-subtitle">Join the Smart Tourist Safety System</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('personal')">Personal Info</button>
+                <button class="tab" onclick="switchTab('travel')">Travel Details</button>
+                <button class="tab" onclick="switchTab('emergency')">Emergency</button>
+            </div>
+
+            <form id="registerForm">
+                <!-- Personal Info Tab -->
+                <div id="personal" class="tab-content active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">First Name *</label>
+                            <input type="text" id="firstName" class="form-control" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" class="form-control" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address *</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" class="form-control" placeholder="Enter your phone number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="nationality">Nationality *</label>
+                            <input type="text" id="nationality" class="form-control" placeholder="Enter your nationality" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="passport">Passport Number</label>
+                            <input type="text" id="passport" class="form-control" placeholder="Enter passport number">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">Permanent Address</label>
+                        <textarea id="address" class="form-control" rows="3" placeholder="Enter your permanent address"></textarea>
+                    </div>
+                </div>
+
+                <!-- Travel Details Tab -->
+                <div id="travel" class="tab-content">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="arrivalDate">Arrival Date *</label>
+                            <input type="date" id="arrivalDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="departureDate">Departure Date *</label>
+                            <input type="date" id="departureDate" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="destination">Primary Destination *</label>
+                            <input type="text" id="destination" class="form-control" placeholder="Enter primary destination" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="accommodation">Accommodation Details</label>
+                            <input type="text" id="accommodation" class="form-control" placeholder="Hotel name and address">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="itinerary">Travel Itinerary</label>
+                        <textarea id="itinerary" class="form-control" rows="3" placeholder="Brief description of your travel plans"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="transport">Transportation Mode</label>
+                            <select id="transport" class="form-control">
+                                <option value="">Select transportation</option>
+                                <option value="flight">Flight</option>
+                                <option value="train">Train</option>
+                                <option value="bus">Bus</option>
+                                <option value="car">Car</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="groupSize">Group Size</label>
+                            <input type="number" id="groupSize" class="form-control" placeholder="Number of people" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Tab -->
+                <div id="emergency" class="tab-content">
+                    <div class="emergency-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Emergency Contact Information</h4>
+                        <p style="color: #CBD5E1; font-size: 0.875rem;">These contacts will be notified in case of emergency</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="emergency1Name">Primary Contact Name *</label>
+                            <input type="text" id="emergency1Name" class="form-control" placeholder="Contact person name" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="emergency1Relation">Relationship *</label>
+                            <input type="text" id="emergency1Relation" class="form-control" placeholder="Family, friend, etc." required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="emergency1Phone">Phone Number *</label>
+                            <input type="tel" id="emergency1Phone" class="form-control" placeholder="Contact phone number" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="emergency1Email">Email Address</label>
+                            <input type="email" id="emergency1Email" class="form-control" placeholder="Contact email address">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notification Preferences</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="emailNotifications" checked>
+                                <span>Email Notifications</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="smsNotifications" checked>
+                                <span>SMS Alerts</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="pushNotifications" checked>
+                                <span>Push Notifications</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="register-btn">Create Account</button>
+            </form>
+
+            <div class="login-link">
+                Already have an account? <a href="/login">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = {
+                personal: {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    nationality: document.getElementById('nationality').value,
+                    passport: document.getElementById('passport').value,
+                    address: document.getElementById('address').value
+                },
+                travel: {
+                    arrivalDate: document.getElementById('arrivalDate').value,
+                    departureDate: document.getElementById('departureDate').value,
+                    destination: document.getElementById('destination').value,
+                    accommodation: document.getElementById('accommodation').value,
+                    itinerary: document.getElementById('itinerary').value,
+                    transport: document.getElementById('transport').value,
+                    groupSize: document.getElementById('groupSize').value
+                },
+                emergency: {
+                    primary: {
+                        name: document.getElementById('emergency1Name').value,
+                        relation: document.getElementById('emergency1Relation').value,
+                        phone: document.getElementById('emergency1Phone').value,
+                        email: document.getElementById('emergency1Email').value
+                    }
+                },
+                preferences: {
+                    emailNotifications: document.getElementById('emailNotifications').checked,
+                    smsNotifications: document.getElementById('smsNotifications').checked,
+                    pushNotifications: document.getElementById('pushNotifications').checked
+                }
+            };
+            
+            console.log('Registration Data:', formData);
+            
+            // Show loading state
+            const btn = document.querySelector('.register-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Creating Account...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Store registration data
+                localStorage.setItem('registrationData', JSON.stringify(formData));
+                
+                // Show success message
+                alert('Registration successful! Please login to continue.');
+                
+                // Redirect to login page
+                window.location.href = '/login';
+                
+                // Reset button
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
