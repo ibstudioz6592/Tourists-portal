@@ -15,6 +15,14 @@
       "dest": "/index.html"
     },
     {
+      "src": "/login",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/register.html"
+    },
+    {
       "src": "/dashboard",
       "dest": "/dashboard.html"
     },
@@ -29,14 +37,6 @@
     {
       "src": "/help",
       "dest": "/help.html"
-    },
-    {
-      "src": "/login",
-      "dest": "/login.html"
-    },
-    {
-      "src": "/register",
-      "dest": "/register.html"
     },
     {
       "src": "/backend",
