@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Smart Tourist Safety System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338CA;
+            --secondary: #10B981;
+            --danger: #EF4444;
+            --warning: #F59E0B;
+            --dark: #1F2937;
+            --light: #F9FAFB;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            width: 250px;
+            height: calc(100vh - 80px);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--glass-border);
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 0;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            color: #CBD5E1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: white;
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-item.active {
+            background: rgba(79, 70, 229, 0.2);
+            color: white;
+            border-left-color: var(--primary);
+        }
+
+        .sidebar-icon {
+            font-size: 1.25rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #94A3B8;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-action {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            color: #CBD5E1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .card-action:hover {
+            background: rgba(79, 70, 229, 0.2);
+            color: white;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .stat-icon.green {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .stat-icon.red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #EF4444;
+        }
+
+        .stat-icon.yellow {
+            background: rgba(245, 158, 11, 0.2);
+            color: #F59E0B;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        /* System Status */
+        .system-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .status-item {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+
+        .status-indicator.warning {
+            background: var(--warning);
+        }
+
+        .status-indicator.error {
+            background: var(--danger);
+        }
+
+        .status-info h4 {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-info p {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        /* User Management */
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .user-table th {
+            background: rgba(79, 70, 229, 0.1);
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-table td {
+            color: #CBD5E1;
+        }
+
+        .user-avatar-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.875rem;
+        }
+
+        .role-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .role-badge.admin {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .role-badge.police {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .role-badge.tourist {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #CBD5E1;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Configuration Form */
+        .config-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: #CBD5E1;
+        }
+
+        .form-control {
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Blockchain Status */
+        .blockchain-status {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .blockchain-card {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .blockchain-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .blockchain-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .blockchain-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .system-status {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="logo-text">Tourist Safety System</div>
+            </div>
+            <div class="header-actions">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Super Admin</div>
+                        <div style="font-size: 0.875rem; color: #94A3B8;">System Administrator</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="#" class="sidebar-item active">
+                <i class="fas fa-tachometer-alt sidebar-icon"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-users-cog sidebar-icon"></i>
+                <span>User Management</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-cogs sidebar-icon"></i>
+                <span>System Config</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-link sidebar-icon"></i>
+                <span>Blockchain</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-microchip sidebar-icon"></i>
+                <span>IoT Devices</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-chart-bar sidebar-icon"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-file-alt sidebar-icon"></i>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="sidebar-item">
+                <i class="fas fa-shield-alt sidebar-icon"></i>
+                <span>Security</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Admin Dashboard</h1>
+            <p class="page-subtitle">System overview and management controls</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value">5,247</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon green">
+                        <i class="fas fa-server"></i>
+                    </div>
+                </div>
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">System Uptime</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon red">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Active Alerts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-database"></i>
+                    </div>
+                </div>
+                <div class="stat-value">2.4 TB</div>
+                <div class="stat-label">Data Processed</div>
+            </div>
+        </div>
+
+        <!-- System Status -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">System Status</h3>
+                <div class="card-actions">
+                    <div class="card-action">
+                        <i class="fas fa-sync"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="system-status">
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div class="status-info">
+                            <h4>API Server</h4>
+                            <p>Operational</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div class="status-info">
+                            <h4>Database</h4>
+                            <p>Connected</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div class="status-info">
+                            <h4>Blockchain</h4>
+                            <p>Synced</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator warning"></div>
+                        <div class="status-info">
+                            <h4>IoT Gateway</h4>
+                            <p>High Load</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator"></div>
+                        <div class="status-info">
+                            <h4>SMS Service</h4>
+                            <p>Operational</p>
+                        </div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator error"></div>
+                        <div class="status-info">
+                            <h4>Backup System</h4>
+                            <p>Maintenance</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockchain Status -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Blockchain Network Status</h3>
+                <div class="card-actions">
+                    <div class="card-action">
+                        <i class="fas fa-external-link-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="blockchain-status">
+                    <div class="blockchain-card">
+                        <div class="blockchain-icon">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <h4 class="blockchain-title">Blocks Mined</h4>
+                        <div class="blockchain-value">1,247,892</div>
+                    </div>
+                    <div class="blockchain-card">
+                        <div class="blockchain-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4 class="blockchain-title">TPS</h4>
+                        <div class="blockchain-value">1,245</div>
+                    </div>
+                    <div class="blockchain-card">
+                        <div class="blockchain-icon">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <h4 class="blockchain-title">Gas Price</h4>
+                        <div class="blockchain-value">25 Gwei</div>
+                    </div>
+                    <div class="blockchain-card">
+                        <div class="blockchain-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4 class="blockchain-title">Nodes</h4>
+                        <div class="blockchain-value">42</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Management -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">User Management</h3>
+                <div class="card-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add User
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="user-avatar-small">AS</div>
+                                    <span>Amit Sharma</span>
+                                </div>
+                            </td>
+                            <td>amit.sharma@police.gov.in</td>
+                            <td><span class="role-badge police">Police</span></td>
+                            <td><span class="status-indicator"></span> Active</td>
+                            <td>2 hours ago</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
+                                <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="user-avatar-small">PK</div>
+                                    <span>Priya Kumar</span>
+                                </div>
+                            </td>
+                            <td>priya.kumar@tourism.gov.in</td>
+                            <td><span class="role-badge admin">Admin</span></td>
+                            <td><span class="status-indicator"></span> Active</td>
+                            <td>1 day ago</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
+                                <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                    <div class="user-avatar-small">RJ</div>
+                                    <span>Rahul Jain</span>
+                                </div>
+                            </td>
+                            <td>rahul.jain@example.com</td>
+                            <td><span class="role-badge tourist">Tourist</span></td>
+                            <td><span class="status-indicator"></span> Active</td>
+                            <td>3 days ago</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Edit</button>
+                                <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- System Configuration -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">System Configuration</h3>
+                <div class="card-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <form class="config-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>System Name</label>
+                            <input type="text" class="form-control" value="Smart Tourist Safety System">
+                        </div>
+                        <div class="form-group">
+                            <label>Version</label>
+                            <input type="text" class="form-control" value="v2.1.0" readonly>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>API Rate Limit (requests/min)</label>
+                            <input type="number" class="form-control" value="1000">
+                        </div>
+                        <div class="form-group">
+                            <label>Session Timeout (minutes)</label>
+                            <input type="number" class="form-control" value="30">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Default Language</label>
+                        <select class="form-control">
+                            <option>English</option>
+                            <option>Hindi</option>
+                            <option>Bengali</option>
+                            <option>Tamil</option>
+                            <option>Telugu</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Emergency Contacts</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter emergency contacts (comma separated)">100,108,101,1363</textarea>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulate real-time updates
+        setInterval(() => {
+            // Update system status randomly
+            const indicators = document.querySelectorAll('.status-indicator');
+            indicators.forEach(indicator => {
+                if (Math.random() > 0.9) {
+                    const classes = ['warning', 'error', ''];
+                    const randomClass = classes[Math.floor(Math.random() * classes.length)];
+                    indicator.className = 'status-indicator ' + randomClass;
+                }
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
