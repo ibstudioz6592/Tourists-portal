@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Smart Tourist Safety System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     <style>
         :root {
             --primary: #4F46E5;
@@ -13,12 +14,16 @@
             --secondary: #10B981;
             --danger: #EF4444;
             --warning: #F59E0B;
-            --dark: #1F2937;
+            --dark: #0F172A;
             --light: #F9FAFB;
             --glass: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
         }
 
         * {
@@ -33,6 +38,116 @@
             color: var(--light);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(79, 70, 229, 0.1);
+            animation: move 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .bg-animation span:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation span:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .bg-animation span:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .bg-animation span:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .bg-animation span:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation span:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .bg-animation span:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .bg-animation span:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .bg-animation span:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .bg-animation span:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
         }
 
         /* Header */
@@ -40,11 +155,12 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: var(--glass);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
             padding: 1rem 0;
+            transition: all 0.3s ease;
         }
 
         .header-content {
@@ -60,23 +176,42 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--gradient-1);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             color: white;
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(79, 70, 229, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 70, 229, 0);
+            }
         }
 
         .logo-text {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
             background: linear-gradient(135deg, #fff, #CBD5E1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -92,16 +227,86 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .user-info:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--gradient-1);
             display: flex;
             align-items: center;
             justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: #94A3B8;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            color: #CBD5E1;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
             color: white;
         }
 
@@ -110,17 +315,32 @@
             position: fixed;
             top: 80px;
             left: 0;
-            width: 250px;
+            width: 280px;
             height: calc(100vh - 80px);
-            background: var(--glass);
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--glass-border);
             overflow-y: auto;
             z-index: 999;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #CBD5E1;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .sidebar-menu {
-            padding: 1.5rem 0;
+            padding: 1rem 0;
         }
 
         .sidebar-item {
@@ -132,6 +352,19 @@
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            position: relative;
+        }
+
+        .sidebar-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: rgba(79, 70, 229, 0.1);
+            transition: width 0.3s ease;
+            z-index: -1;
         }
 
         .sidebar-item:hover {
@@ -140,10 +373,18 @@
             border-left-color: var(--primary);
         }
 
+        .sidebar-item:hover::before {
+            width: 100%;
+        }
+
         .sidebar-item.active {
             background: rgba(79, 70, 229, 0.2);
             color: white;
             border-left-color: var(--primary);
+        }
+
+        .sidebar-item.active::before {
+            width: 100%;
         }
 
         .sidebar-icon {
@@ -152,37 +393,89 @@
             text-align: center;
         }
 
+        .sidebar-text {
+            flex: 1;
+        }
+
+        .sidebar-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            min-width: 20px;
+            text-align: center;
+        }
+
         /* Main Content */
         .main-content {
-            margin-left: 250px;
+            margin-left: 280px;
             margin-top: 80px;
             padding: 2rem;
             min-height: calc(100vh - 80px);
+            transition: margin-left 0.3s ease;
         }
 
         /* Page Header */
         .page-header {
             margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
         }
 
         .page-title {
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .page-subtitle {
             color: #94A3B8;
+            font-size: 1rem;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 1rem;
         }
 
         /* Cards */
         .card {
-            background: var(--glass);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
         .card-header {
@@ -195,7 +488,10 @@
 
         .card-title {
             font-size: 1.25rem;
-            font-weight: 600;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .card-actions {
@@ -220,6 +516,7 @@
         .card-action:hover {
             background: rgba(79, 70, 229, 0.2);
             color: white;
+            transform: translateY(-2px);
         }
 
         .card-content {
@@ -229,24 +526,35 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: var(--glass);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 1.5rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient-1);
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
         }
 
         .stat-header {
@@ -264,6 +572,11 @@
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .stat-icon.blue {
@@ -287,14 +600,163 @@
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .stat-label {
             color: #94A3B8;
             font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .stat-change.positive {
+            color: #10B981;
+        }
+
+        .stat-change.negative {
+            color: #EF4444;
+        }
+
+        /* AI Integration Cards */
+        .ai-integration-card {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .ai-integration-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
+        }
+
+        .ai-integration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .ai-integration-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-integration-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(79, 70, 229, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .ai-integration-content {
+            color: #CBD5E1;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .ai-integration-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .ai-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .ai-stat:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .ai-stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, #fff, #CBD5E1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ai-stat-label {
+            font-size: 0.875rem;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* System Status */
@@ -311,6 +773,12 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .status-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
         }
 
         .status-indicator {
@@ -318,9 +786,26 @@
             height: 12px;
             border-radius: 50%;
             background: var(--secondary);
+            position: relative;
+        }
+
+        .status-indicator::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--secondary);
+            animation: pulse 2s infinite;
         }
 
         .status-indicator.warning {
+            background: var(--warning);
+        }
+
+        .status-indicator.warning::after {
             background: var(--warning);
         }
 
@@ -328,14 +813,93 @@
             background: var(--danger);
         }
 
+        .status-indicator.error::after {
+            background: var(--danger);
+        }
+
         .status-info h4 {
             font-size: 0.875rem;
             margin-bottom: 0.25rem;
+            font-weight: 600;
         }
 
         .status-info p {
             font-size: 0.75rem;
             color: #94A3B8;
+        }
+
+        /* Verification Requests */
+        .verification-requests {
+            margin-top: 2rem;
+        }
+
+        .request-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .request-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .request-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid var(--glass-border);
+        }
+
+        .request-details {
+            flex: 1;
+        }
+
+        .request-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .request-info {
+            font-size: 0.875rem;
+            color: #94A3B8;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .request-status.pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .request-status.verified {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary);
+        }
+
+        .request-status.rejected {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
         }
 
         /* User Management */
@@ -355,22 +919,30 @@
             background: rgba(79, 70, 229, 0.1);
             font-weight: 600;
             color: white;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 1px;
         }
 
         .user-table td {
             color: #CBD5E1;
         }
 
+        .user-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
         .user-avatar-small {
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: var(--gradient-1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-size: 0.875rem;
+            font-weight: 600;
         }
 
         .role-badge {
@@ -378,6 +950,7 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
+            text-transform: uppercase;
         }
 
         .role-badge.admin {
@@ -410,8 +983,13 @@
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: var(--gradient-1);
             color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
         }
 
         .btn-secondary {
@@ -420,13 +998,19 @@
             border: 1px solid var(--glass-border);
         }
 
-        .btn-danger {
-            background: var(--danger);
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
         }
 
-        .btn:hover {
-            transform: translateY(-1px);
+        .btn-danger {
+            background: var(--gradient-2);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
         }
 
         /* Configuration Form */
@@ -459,6 +1043,7 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .form-row {
@@ -480,12 +1065,26 @@
             border-radius: 15px;
             padding: 1.5rem;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .blockchain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.2);
         }
 
         .blockchain-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: var(--primary);
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .blockchain-card:hover .blockchain-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .blockchain-title {
@@ -500,14 +1099,272 @@
             color: var(--secondary);
         }
 
+        /* Blockchain Nodes */
+        .blockchain-nodes {
+            margin-top: 2rem;
+        }
+
+        .node-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .node-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .node-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .node-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8B5CF6;
+            font-size: 1.5rem;
+        }
+
+        .node-details h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .node-details p {
+            font-size: 0.875rem;
+            color: #94A3B8;
+        }
+
+        .node-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary);
+            position: relative;
+        }
+
+        .status-dot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--secondary);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.offline {
+            background: var(--danger);
+        }
+
+        .status-dot.offline::after {
+            background: var(--danger);
+        }
+
+        /* System Logs */
+        .system-log {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .log-entry:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .log-time {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            min-width: 80px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-level {
+            font-weight: 600;
+            min-width: 80px;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+
+        .log-level.info {
+            color: #3B82F6;
+        }
+
+        .log-level.warning {
+            color: var(--warning);
+        }
+
+        .log-level.error {
+            color: var(--danger);
+        }
+
+        .log-message {
+            flex: 1;
+            color: #CBD5E1;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            max-width: 350px;
+            z-index: 1001;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .notification-message {
+            color: #CBD5E1;
+            line-height: 1.5;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: #94A3B8;
+            cursor: pointer;
+            font-size: 1.25rem;
+            transition: color 0.3s ease;
+        }
+
+        .notification-close:hover {
+            color: white;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .notification.success .notification-icon {
+            color: var(--secondary);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .notification.error .notification-icon {
+            color: var(--danger);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--primary);
+        }
+
+        .notification.info .notification-icon {
+            color: var(--primary);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
         @media (max-width: 1024px) {
             .sidebar {
                 transform: translateX(-100%);
             }
             
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
             .main-content {
                 margin-left: 0;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
             }
             
             .form-row {
@@ -516,6 +1373,22 @@
         }
 
         @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+            
+            .logo-text {
+                display: none;
+            }
+            
+            .user-name {
+                display: none;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -523,16 +1396,65 @@
             .system-status {
                 grid-template-columns: 1fr;
             }
+            
+            .ai-integration-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .blockchain-status {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .request-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .request-actions {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .ai-integration-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .blockchain-status {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
     <!-- Header -->
     <header class="header">
         <div class="header-content">
@@ -547,52 +1469,62 @@
                     <div class="user-avatar">
                         <i class="fas fa-user-shield"></i>
                     </div>
-                    <div>
-                        <div style="font-weight: 600;">Super Admin</div>
-                        <div style="font-size: 0.875rem; color: #94A3B8;">System Administrator</div>
+                    <div class="user-details">
+                        <div class="user-name">Super Admin</div>
+                        <div class="user-role">System Administrator</div>
                     </div>
                 </div>
                 <button class="btn btn-secondary">
                     <i class="fas fa-sign-out-alt"></i>
+                </button>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Sidebar -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-title">
+                <i class="fas fa-cogs"></i> System Control
+            </div>
+        </div>
         <nav class="sidebar-menu">
             <a href="#" class="sidebar-item active">
                 <i class="fas fa-tachometer-alt sidebar-icon"></i>
-                <span>Dashboard</span>
+                <span class="sidebar-text">Dashboard</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-users-cog sidebar-icon"></i>
-                <span>User Management</span>
+                <span class="sidebar-text">User Management</span>
+                <span class="sidebar-badge">12</span>
             </a>
             <a href="#" class="sidebar-item">
-                <i class="fas fa-cogs sidebar-icon"></i>
-                <span>System Config</span>
+                <i class="fas fa-brain sidebar-icon"></i>
+                <span class="sidebar-text">AI Integration</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-link sidebar-icon"></i>
-                <span>Blockchain</span>
+                <span class="sidebar-text">Blockchain</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-microchip sidebar-icon"></i>
-                <span>IoT Devices</span>
+                <span class="sidebar-text">IoT Devices</span>
+                <span class="sidebar-badge">3</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-chart-bar sidebar-icon"></i>
-                <span>Analytics</span>
+                <span class="sidebar-text">Analytics</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-file-alt sidebar-icon"></i>
-                <span>Reports</span>
+                <span class="sidebar-text">Reports</span>
             </a>
             <a href="#" class="sidebar-item">
                 <i class="fas fa-shield-alt sidebar-icon"></i>
-                <span>Security</span>
+                <span class="sidebar-text">Security</span>
             </a>
         </nav>
     </aside>
@@ -601,8 +1533,23 @@
     <main class="main-content">
         <!-- Page Header -->
         <div class="page-header">
-            <h1 class="page-title">Admin Dashboard</h1>
-            <p class="page-subtitle">System overview and management controls</p>
+            <div class="page-title-container">
+                <div class="page-title-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div>
+                    <h1 class="page-title">Admin Dashboard</h1>
+                    <p class="page-subtitle">System overview and management controls</p>
+                </div>
+            </div>
+            <div class="page-actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-sync"></i> Refresh Data
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="fas fa-download"></i> Export Report
+                </button>
+            </div>
         </div>
 
         <!-- Stats Grid -->
@@ -611,6 +1558,9 @@
                 <div class="stat-header">
                     <div class="stat-icon blue">
                         <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 12%
                     </div>
                 </div>
                 <div class="stat-value">5,247</div>
@@ -621,6 +1571,9 @@
                     <div class="stat-icon green">
                         <i class="fas fa-server"></i>
                     </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i> 5%
+                    </div>
                 </div>
                 <div class="stat-value">99.9%</div>
                 <div class="stat-label">System Uptime</div>
@@ -629,6 +1582,9 @@
                 <div class="stat-header">
                     <div class="stat-icon red">
                         <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-up"></i> 8%
                     </div>
                 </div>
                 <div class="stat-value">12</div>
@@ -639,6 +1595,9 @@
                     <div class="stat-icon yellow">
                         <i class="fas fa-database"></i>
                     </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-down"></i> 15%
+                    </div>
                 </div>
                 <div class="stat-value">2.4 TB</div>
                 <div class="stat-label">Data Processed</div>
@@ -648,7 +1607,9 @@
         <!-- System Status -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">System Status</h3>
+                <h3 class="card-title">
+                    <i class="fas fa-heartbeat"></i> System Status
+                </h3>
                 <div class="card-actions">
                     <div class="card-action">
                         <i class="fas fa-sync"></i>
@@ -703,10 +1664,195 @@
             </div>
         </div>
 
-        <!-- Blockchain Status -->
+        <!-- AI Integration Section -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Blockchain Network Status</h3>
+                <h3 class="card-title">
+                    <i class="fas fa-brain"></i> AI Integration Status
+                </h3>
+                <div class="card-actions">
+                    <div class="card-action">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <!-- Face Match Integration -->
+                <div class="ai-integration-card">
+                    <div class="ai-integration-header">
+                        <div class="ai-integration-title">
+                            <div class="ai-integration-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            Face Match
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="ai-integration-content">
+                        Vertex AI Vision for face detection and embedding matching with 98.7% accuracy
+                    </div>
+                    <div class="ai-integration-stats">
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">98.7%</div>
+                            <div class="ai-stat-label">Accuracy</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">1.2s</div>
+                            <div class="ai-stat-label">Avg. Time</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">24/7</div>
+                            <div class="ai-stat-label">Uptime</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">5,247</div>
+                            <div class="ai-stat-label">Processed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- OCR Integration -->
+                <div class="ai-integration-card">
+                    <div class="ai-integration-header">
+                        <div class="ai-integration-title">
+                            <div class="ai-integration-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            OCR Processing
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="ai-integration-content">
+                        Vision AI text detection for passport/Aadhaar QR code processing with 99.2% accuracy
+                    </div>
+                    <div class="ai-integration-stats">
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">99.2%</div>
+                            <div class="ai-stat-label">Accuracy</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">0.8s</div>
+                            <div class="ai-stat-label">Avg. Time</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">24/7</div>
+                            <div class="ai-stat-label">Uptime</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">3,892</div>
+                            <div class="ai-stat-label">Processed</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fraud Check Integration -->
+                <div class="ai-integration-card">
+                    <div class="ai-integration-header">
+                        <div class="ai-integration-title">
+                            <div class="ai-integration-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            Fraud Check
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="ai-integration-content">
+                        Optional integration with third-party KYC services for enhanced security
+                    </div>
+                    <div class="ai-integration-stats">
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">--</div>
+                            <div class="ai-stat-label">Accuracy</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">--</div>
+                            <div class="ai-stat-label">Avg. Time</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">--</div>
+                            <div class="ai-stat-label">Uptime</div>
+                        </div>
+                        <div class="ai-stat">
+                            <div class="ai-stat-value">0</div>
+                            <div class="ai-stat-label">Processed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Requests -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-user-check"></i> Pending Verification Requests
+                </h3>
+                <div class="card-actions">
+                    <div class="card-action">
+                        <i class="fas fa-filter"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="verification-requests">
+                    <div class="request-card">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="request-avatar">
+                        <div class="request-details">
+                            <div class="request-name">Priya Sharma</div>
+                            <div class="request-info">Foreign Tourist • Passport: AB1234567 • Submitted 2 hours ago</div>
+                            <span class="request-status pending">Pending Review</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-primary">Approve</button>
+                            <button class="btn btn-secondary">Review</button>
+                            <button class="btn btn-danger">Reject</button>
+                        </div>
+                    </div>
+                    
+                    <div class="request-card">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="request-avatar">
+                        <div class="request-details">
+                            <div class="request-name">John Smith</div>
+                            <div class="request-info">Foreign Tourist • Passport: CD7654321 • Submitted 5 hours ago</div>
+                            <span class="request-status pending">Pending Review</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-primary">Approve</button>
+                            <button class="btn btn-secondary">Review</button>
+                            <button class="btn btn-danger">Reject</button>
+                        </div>
+                    </div>
+                    
+                    <div class="request-card">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="request-avatar">
+                        <div class="request-details">
+                            <div class="request-name">Anita Patel</div>
+                            <div class="request-info">Indian Tourist • Aadhaar: 1234-5678-9012 • Submitted 1 day ago</div>
+                            <span class="request-status verified">Verified</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn btn-secondary">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blockchain Network Status -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-link"></i> Blockchain Network Status
+                </h3>
                 <div class="card-actions">
                     <div class="card-action">
                         <i class="fas fa-external-link-alt"></i>
@@ -731,7 +1877,7 @@
                     </div>
                     <div class="blockchain-card">
                         <div class="blockchain-icon">
-                            <i class="fas fa-memory"></i>
+                            <i class="fas fa-gas-pump"></i>
                         </div>
                         <h4 class="blockchain-title">Gas Price</h4>
                         <div class="blockchain-value">25 Gwei</div>
@@ -744,17 +1890,122 @@
                         <div class="blockchain-value">42</div>
                     </div>
                 </div>
+                
+                <div class="blockchain-nodes">
+                    <h4 style="margin-bottom: 1rem; font-weight: 600;">Network Nodes</h4>
+                    <div class="node-card">
+                        <div class="node-info">
+                            <div class="node-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="node-details">
+                                <h4>Mumbai Node</h4>
+                                <p>Primary validation node</p>
+                            </div>
+                        </div>
+                        <div class="node-status">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                    
+                    <div class="node-card">
+                        <div class="node-info">
+                            <div class="node-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="node-details">
+                                <h4>Delhi Node</h4>
+                                <p>Secondary validation node</p>
+                            </div>
+                        </div>
+                        <div class="node-status">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                    
+                    <div class="node-card">
+                        <div class="node-info">
+                            <div class="node-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="node-details">
+                                <h4>Bangalore Node</h4>
+                                <p>Tertiary validation node</p>
+                            </div>
+                        </div>
+                        <div class="node-status">
+                            <div class="status-dot offline"></div>
+                            <span>Offline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Logs -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-file-alt"></i> System Logs
+                </h3>
+                <div class="card-actions">
+                    <div class="card-action">
+                        <i class="fas fa-download"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="system-log">
+                    <div class="log-entry">
+                        <div class="log-time">10:45:23</div>
+                        <div class="log-level info">INFO</div>
+                        <div class="log-message">User verification completed for Tourist ID: TS-2025-8472</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:42:15</div>
+                        <div class="log-level warning">WARNING</div>
+                        <div class="log-message">High load detected on OCR processing service</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:38:47</div>
+                        <div class="log-level info">INFO</div>
+                        <div class="log-message">New registration initiated from IP: 192.168.1.105</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:35:12</div>
+                        <div class="log-level error">ERROR</div>
+                        <div class="log-message">Failed to connect to Bangalore blockchain node</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:30:05</div>
+                        <div class="log-level info">INFO</div>
+                        <div class="log-message">System backup completed successfully</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:25:42</div>
+                        <div class="log-level info">INFO</div>
+                        <div class="log-message">AI face matching service updated to version 2.1.0</div>
+                    </div>
+                    <div class="log-entry">
+                        <div class="log-time">10:20:18</div>
+                        <div class="log-level warning">WARNING</div>
+                        <div class="log-message">Memory usage above 80% on server-02</div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- User Management -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">User Management</h3>
+                <h3 class="card-title">
+                    <i class="fas fa-users-cog"></i> User Management
+                </h3>
                 <div class="card-actions">
                     <button class="btn btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Add User
+                        <i class="fas fa-plus"></i> Add User
                     </button>
                 </div>
             </div>
@@ -827,11 +2078,12 @@
         <!-- System Configuration -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">System Configuration</h3>
+                <h3 class="card-title">
+                    <i class="fas fa-cogs"></i> System Configuration
+                </h3>
                 <div class="card-actions">
                     <button class="btn btn-primary">
-                        <i class="fas fa-save"></i>
-                        Save Changes
+                        <i class="fas fa-save"></i> Save Changes
                     </button>
                 </div>
             </div>
@@ -876,7 +2128,77 @@
         </div>
     </main>
 
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <button class="notification-close" onclick="closeNotification()">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="notification-header">
+            <div class="notification-icon" id="notification-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="notification-title" id="notification-title">Notification</div>
+        </div>
+        <div class="notification-message" id="notification-message">
+            This is a notification message.
+        </div>
+    </div>
+
     <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        });
+
+        // Toggle switch functionality
+        document.querySelectorAll('.toggle-switch input').forEach(toggle => {
+            toggle.addEventListener('change', function() {
+                const card = this.closest('.ai-integration-card');
+                const title = card.querySelector('.ai-integration-title').textContent.trim();
+                
+                if (this.checked) {
+                    showNotification('success', 'Integration Enabled', `${title} has been enabled`);
+                } else {
+                    showNotification('warning', 'Integration Disabled', `${title} has been disabled`);
+                }
+            });
+        });
+
+        // Notification system
+        function showNotification(type, title, message) {
+            const notification = document.getElementById('notification');
+            const icon = document.getElementById('notification-icon');
+            const titleEl = document.getElementById('notification-title');
+            const messageEl = document.getElementById('notification-message');
+            
+            // Set notification type
+            notification.className = 'notification ' + type;
+            
+            // Set icon based on type
+            if (type === 'success') {
+                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            } else if (type === 'error') {
+                icon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            } else {
+                icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+            }
+            
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            notification.classList.add('show');
+            
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        function closeNotification() {
+            document.getElementById('notification').classList.remove('show');
+        }
+
         // Simulate real-time updates
         setInterval(() => {
             // Update system status randomly
@@ -888,7 +2210,68 @@
                     indicator.className = 'status-indicator ' + randomClass;
                 }
             });
+            
+            // Update stats randomly
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                if (Math.random() > 0.8) {
+                    const currentValue = stat.textContent;
+                    if (currentValue.includes('%')) {
+                        const numValue = parseFloat(currentValue);
+                        const newValue = Math.max(90, Math.min(100, numValue + (Math.random() - 0.5) * 2));
+                        stat.textContent = newValue.toFixed(1) + '%';
+                    } else if (currentValue.includes('TB')) {
+                        const numValue = parseFloat(currentValue);
+                        const newValue = Math.max(1, numValue + (Math.random() - 0.5) * 0.5);
+                        stat.textContent = newValue.toFixed(1) + ' TB';
+                    } else if (!currentValue.includes(',')) {
+                        const numValue = parseInt(currentValue.replace(',', ''));
+                        const newValue = Math.max(1000, numValue + Math.floor((Math.random() - 0.5) * 100));
+                        stat.textContent = newValue.toLocaleString();
+                    }
+                }
+            });
         }, 5000);
+
+        // Add new log entry
+        function addLogEntry(level, message) {
+            const logContainer = document.querySelector('.system-log');
+            const time = new Date().toLocaleTimeString();
+            
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            logEntry.innerHTML = `
+                <div class="log-time">${time}</div>
+                <div class="log-level ${level}">${level.toUpperCase()}</div>
+                <div class="log-message">${message}</div>
+            `;
+            
+            logContainer.insertBefore(logEntry, logContainer.firstChild);
+            
+            // Keep only last 20 entries
+            while (logContainer.children.length > 20) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        // Simulate log entries
+        setInterval(() => {
+            const messages = [
+                { level: 'info', message: 'System health check completed successfully' },
+                { level: 'info', message: 'Database backup process initiated' },
+                { level: 'warning', message: 'High memory usage detected on server-01' },
+                { level: 'info', message: 'User authentication successful' },
+                { level: 'error', message: 'Failed to connect to external API' }
+            ];
+            
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            addLogEntry(randomMessage.level, randomMessage.message);
+        }, 10000);
+
+        // Initialize with some log entries
+        addLogEntry('info', 'Admin dashboard loaded successfully');
+        addLogEntry('info', 'System status check initiated');
+        addLogEntry('info', 'All services operational');
     </script>
 </body>
 </html>
