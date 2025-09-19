@@ -25,10 +25,10 @@ export default async function handler(req, res) {
     // Get API key from environment variables
     const apiKey = process.env.OPENAI_API_KEY || process.env.XAI_API_KEY;
     
+    // Fallback response when no API key is available
     if (!apiKey) {
-      // Fallback response when no API key is available
       return res.status(200).json({ 
-        response: `I understand you're asking about: "${message}". As a tourist safety assistant for India, I recommend checking with local authorities or your embassy for the most current information. For emergencies, dial 100 for police, 108 for ambulance, or 101 for fire services.` 
+        response: `I understand you're asking about: "${message}". As a helpful assistant, I recommend checking official sources for the most current information.` 
       });
     }
     
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',
           messages: [
-            { role: 'system', content: 'You are AJ, a helpful assistant for a tourist safety system in India. Provide concise, helpful responses about travel safety, emergency procedures, and tourist information in India.' },
+            { role: 'system', content: 'You are AJ, a helpful assistant. Provide concise, helpful responses.' },
             ...(context ? [{ role: 'assistant', content: context }] : []),
             { role: 'user', content: message }
           ],
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: 'grok-beta',
           messages: [
-            { role: 'system', content: 'You are AJ, a helpful assistant for a tourist safety system in India. Provide concise, helpful responses about travel safety, emergency procedures, and tourist information in India.' },
+            { role: 'system', content: 'You are AJ, a helpful assistant. Provide concise, helpful responses.' },
             ...(context ? [{ role: 'assistant', content: context }] : []),
             { role: 'user', content: message }
           ],
