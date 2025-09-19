@@ -2389,31 +2389,50 @@
                     payload.context = replyToText;
                 }
                 
-                // Send to AI API - Replace with your Vercel endpoint
-                fetch('/api/ai', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Remove typing indicator
-                    typingIndicator.remove();
-                    
-                    // Add AI response
-                    const botMessage = document.createElement('div');
-                    botMessage.className = 'ai-message ai-bot-message';
-                    botMessage.textContent = data.response;
-                    aiChatMessages.appendChild(botMessage);
-                    makeMessageReplyable(botMessage);
-                    
-                    // Scroll to bottom
-                    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                // In your frontend JavaScript, update the fetch call
+fetch('/api/ai', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload)
+})
+.then(response => {
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+})
+.then(data => {
+    // Remove typing indicator
+    typingIndicator.remove();
+    
+    // Add AI response
+    const botMessage = document.createElement('div');
+    botMessage.className = 'ai-message ai-bot-message';
+    botMessage.textContent = data.response;
+    aiChatMessages.appendChild(botMessage);
+    makeMessageReplyable(botMessage);
+    
+    // Scroll to bottom
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+})
+.catch(error => {
+    console.error('Error:', error);
+    
+    // Remove typing indicator
+    typingIndicator.remove();
+    
+    // Add error message
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'ai-message ai-bot-message';
+    errorMessage.textContent = "I'm sorry, I'm having trouble connecting to my servers right now. Please try again later.";
+    aiChatMessages.appendChild(errorMessage);
+    makeMessageReplyable(errorMessage);
+    
+    // Scroll to bottom
+    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+});
                     
                     // Remove typing indicator
                     typingIndicator.remove();
