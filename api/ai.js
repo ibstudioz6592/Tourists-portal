@@ -1,17 +1,37 @@
 // api/ai.js
 export default async function handler(req, res) {
-  const { message, context } = req.body;
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   
-  // Get API key from environment variables
-  const apiKey = process.env.OPENAI_API_KEY || process.env.XAI_API_KEY;
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   
-  if (!apiKey) {
-    return res.status(500).json({ 
-      response: "I'm sorry, the AI service is not properly configured. Please contact the administrator." 
-    });
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
   
   try {
+    const { message, context } = req.body;
+    
+    if (!message) {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+    
+    // Get API key from environment variables
+    const apiKey = process.env.OPENAI_API_KEY || process.env.XAI_API_KEY;
+    
+    if (!apiKey) {
+      // Fallback response when no API key is available
+      return res.status(200).json({ 
+        response: `I understand you're asking about: "${message}". As a tourist safety assistant for India, I recommend checking with local authorities or your embassy for the most current information. For emergencies, dial 100 for police, 108 for ambulance, or 101 for fire services.` 
+      });
+    }
+    
     // Determine which AI service to use
     let response;
     
@@ -34,6 +54,10 @@ export default async function handler(req, res) {
           temperature: 0.7
         })
       });
+      
+      if (!openaiResponse.ok) {
+        throw new Error(`OpenAI API error: ${openaiResponse.status} ${openaiResponse.statusText}`);
+      }
       
       const openaiData = await openaiResponse.json();
       response = openaiData.choices[0].message.content;
@@ -58,12 +82,12 @@ export default async function handler(req, res) {
         })
       });
       
+      if (!xaiResponse.ok) {
+        throw new Error(`X.AI API error: ${xaiResponse.status} ${xaiResponse.statusText}`);
+      }
+      
       const xaiData = await xaiResponse.json();
       response = xaiData.choices[0].message.content;
-    }
-    else {
-      // Fallback to mock response if no API key is available
-      response = `I understand you're asking about: "${message}". As a tourist safety assistant for India, I recommend checking with local authorities or your embassy for the most current information. For emergencies, dial 100 for police, 108 for ambulance, or 101 for fire services.`;
     }
     
     res.status(200).json({ response });
