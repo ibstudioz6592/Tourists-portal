@@ -543,6 +543,27 @@
             font-size: 1.2rem;
         }
         
+        /* Status indicator */
+        .ai-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ccc;
+        }
+        
+        .ai-status.online {
+            background-color: #10B981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+        }
+        
+        .ai-status.offline {
+            background-color: #EF4444;
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .ai-assistant {
@@ -1699,6 +1720,7 @@
             <div class="ai-chat-header">
                 <h3>AJ Assistant</h3>
                 <div class="ai-header-actions">
+                    <div class="ai-status" id="ai-status"></div>
                     <button class="ai-back-btn" style="display: none;">
                         <i class="fas fa-arrow-left"></i>
                     </button>
@@ -2286,6 +2308,10 @@
             const aiReplyPreview = document.querySelector('.ai-reply-preview');
             const aiReplyText = document.querySelector('.ai-reply-text');
             const aiCancelReply = document.querySelector('.ai-cancel-reply');
+            const aiStatus = document.getElementById('ai-status');
+            
+            // Check API status on load
+            checkApiStatus();
             
             // Toggle chat window
             aiFloatBtn.addEventListener('click', function() {
@@ -2346,8 +2372,32 @@
             // Apply reply functionality to existing messages
             document.querySelectorAll('.ai-message').forEach(makeMessageReplyable);
             
+            // Check API status
+            async function checkApiStatus() {
+                try {
+                    const response = await fetch('/api/ai', {
+                        method: 'HEAD',
+                        mode: 'no-cors'
+                    });
+                    
+                    // If we get here, the API endpoint exists
+                    aiStatus.classList.add('online');
+                    aiStatus.classList.remove('offline');
+                } catch (error) {
+                    // API endpoint doesn't exist or there's a network error
+                    aiStatus.classList.add('offline');
+                    aiStatus.classList.remove('online');
+                    
+                    // Add a message about the offline status
+                    const statusMessage = document.createElement('div');
+                    statusMessage.className = 'ai-message ai-bot-message';
+                    statusMessage.innerHTML = '<small style="color: #EF4444;"><i class="fas fa-exclamation-triangle"></i> AI service is currently offline. Using fallback responses.</small>';
+                    aiChatMessages.appendChild(statusMessage);
+                }
+            }
+            
             // Send message function
-            function sendAiMessage() {
+            async function sendAiMessage() {
                 const message = aiChatInput.value.trim();
                 if (message === '') return;
                 
@@ -2389,64 +2439,80 @@
                     payload.context = replyToText;
                 }
                 
-                // In your frontend JavaScript, update the fetch call
-fetch('/api/ai', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload)
-})
-.then(response => {
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-})
-.then(data => {
-    // Remove typing indicator
-    typingIndicator.remove();
-    
-    // Add AI response
-    const botMessage = document.createElement('div');
-    botMessage.className = 'ai-message ai-bot-message';
-    botMessage.textContent = data.response;
-    aiChatMessages.appendChild(botMessage);
-    makeMessageReplyable(botMessage);
-    
-    // Scroll to bottom
-    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-})
-.catch(error => {
-    console.error('Error:', error);
-    
-    // Remove typing indicator
-    typingIndicator.remove();
-    
-    // Add error message
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'ai-message ai-bot-message';
-    errorMessage.textContent = "I'm sorry, I'm having trouble connecting to my servers right now. Please try again later.";
-    aiChatMessages.appendChild(errorMessage);
-    makeMessageReplyable(errorMessage);
-    
-    // Scroll to bottom
-    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-});
+                try {
+                    // Check if API is online
+                    if (aiStatus.classList.contains('offline')) {
+                        // Use fallback response
+                        setTimeout(() => {
+                            typingIndicator.remove();
+                            
+                            const fallbackResponses = [
+                                `I understand you're asking about: "${message}". As a helpful assistant, I recommend checking official sources for the most current information.`,
+                                `Thanks for your message: "${message}". I'm currently operating in offline mode, but I'm here to help with basic questions.`,
+                                `I received your question about "${message}". While I'm in offline mode, I can still provide general guidance.`
+                            ];
+                            
+                            const botMessage = document.createElement('div');
+                            botMessage.className = 'ai-message ai-bot-message';
+                            botMessage.textContent = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+                            aiChatMessages.appendChild(botMessage);
+                            makeMessageReplyable(botMessage);
+                            
+                            // Scroll to bottom
+                            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+                        }, 1500);
+                        
+                        return;
+                    }
+                    
+                    // Send to AI API
+                    const response = await fetch('/api/ai', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
                     
                     // Remove typing indicator
                     typingIndicator.remove();
                     
+                    // Add AI response
+                    const botMessage = document.createElement('div');
+                    botMessage.className = 'ai-message ai-bot-message';
+                    botMessage.textContent = data.response;
+                    aiChatMessages.appendChild(botMessage);
+                    makeMessageReplyable(botMessage);
+                    
+                    // Scroll to bottom
+                    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // Remove typing indicator
+                    typingIndicator.remove();
+                    
+                    // Update status to offline
+                    aiStatus.classList.add('offline');
+                    aiStatus.classList.remove('online');
+                    
                     // Add error message
                     const errorMessage = document.createElement('div');
                     errorMessage.className = 'ai-message ai-bot-message';
-                    errorMessage.textContent = "I'm sorry, I'm having trouble connecting to my servers right now. Please try again later.";
+                    errorMessage.innerHTML = `<small style="color: #EF4444;"><i class="fas fa-exclamation-triangle"></i> Connection error</small><br>I'm having trouble connecting to my servers right now. Please try again later.`;
                     aiChatMessages.appendChild(errorMessage);
                     makeMessageReplyable(errorMessage);
                     
                     // Scroll to bottom
                     aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-                });
+                }
             }
             
             // Send button click
